@@ -1,0 +1,33 @@
+img{
+    height: 200px;
+    width: auto;
+    margin: 10px 50px;
+}
+
+.container{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.user-name{
+    /* width: 100%; */
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.button-area{
+    display: flex;
+    justify-content: left;
+    align-items: center; 
+    width: 100%;
+}
+
+button{
+    margin: 10px 10px 10px 0;
+}
+

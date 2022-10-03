@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} New User Form {% endblock %}
+
+{% block content %} 
+<h1> New User Form</h1>
+<form action="/users/new" method="POST">
+    <label for="first_name">First Name
+        <input type="text" name="first_name" id="first_name" placeholder="John">
+    </label>
+    <label for="last_name">Last Name
+        <input type="text" name="last_name" id="last_name" placeholder="Smith">
+    </label>
+    <label for="url"> Image URL
+        <input type="text" name="url" id="url" placeholder="https://www.your-image.com/">
+    </label>
+    
+    <button type="submit">Add</button>
+</form>
+
+{% endblock %}
