@@ -3,9 +3,10 @@
 {% block title %} {{user.first_name}}'s Page{% endblock %}
 
 {% block content %} 
-    <div class="container">
+    
         
         <img src="{{user.image_url}}" alt="user image">
+        <div class="container">
         <div class="user-name">
             <h1 class="name">{{user.first_name}} {{user.last_name}}</h1>
             <div class="button-area">
@@ -16,6 +17,20 @@
                 <form action="/users/{{user.id}}/delete" method="POST">
                     <button type="submit">Delete</button>
                 </form>
+            </div>
+
+            <div>
+                <h3>Posts</h3>
+                <ul>
+                    {% for post in posts %}
+                    <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+                    {% endfor %} 
+                </ul>
+                
+                <form action="/users/{{user.id}}/posts/new" method="GET">
+                    <button type="submit">Add Post</button>
+                </form>
+                
             </div>
 
         </div> 

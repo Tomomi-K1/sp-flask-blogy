@@ -5,9 +5,11 @@ img{
 }
 
 .container{
+    width: 90%;
     display: flex;
-    justify-content: left;
-    align-items: center;
+    flex-direction: column;
+    align-content: left;
+    /* align-items: center; */
     flex-wrap: wrap;
 }
 
@@ -30,4 +32,9 @@ img{
 button{
     margin: 10px 10px 10px 0;
 }
+
+.content{
+    width: 100%;
+}
+
 
