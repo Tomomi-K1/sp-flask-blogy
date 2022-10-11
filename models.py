@@ -37,8 +37,37 @@ class Post(db.Model):
 
     user = db.relationship('User', backref='posts')
 
+    tags=db.relationship('Tag', secondary ='posttags', backref='posts')
+
 
     def __repr__(self):
-        """Show info about user"""
+        """Show info about post"""
 
         return f'<post {self.id} {self.title}>'
+
+
+class Tag(db.Model):
+    """create tag instances"""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer, primary_key = True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False, unique = True)
+    
+    def __repr__(self):
+        """Show info about Tag"""
+
+        return f'<post {self.id} {self.name}>'
+
+
+class PostTag(db.Model):
+
+    __tablename__ = "posttags"
+
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), primary_key=True)
+
+    def __repr__(self):
+        """Show info about posttag"""
+
+        return f'<post {self.post_id} {self.tag_id}>'
