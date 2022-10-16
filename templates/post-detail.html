@@ -19,7 +19,9 @@
             <div class="row">
                 <form>
                     <button formaction="/users/{{post.user_id}}" class="btn btn-outline-info m-1" >Cancel</button>
+                    
                     <button formaction="/posts/{{post.id}}/edit" formmethod="GET" class="btn btn-success m-1" type="submit">Edit</button>
+                    
                     <button formaction="/posts/{{post.id}}/delete" formmethod="POST" class="btn btn-danger m-1" type="submit">Delete</button>
                 </form>
             </div>

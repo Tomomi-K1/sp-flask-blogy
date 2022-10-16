@@ -16,9 +16,12 @@ app.config['SECRET_KEY']= 'abc123'
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS']=False
 toolbar = DebugToolbarExtension(app)
 
+# using function created in model connect_db 
 connect_db(app)
+# create database from model py
+db.create_all()
 
-
+# ================User route=======================
 @app.route('/')
 def redirect_to_user_list():
     return redirect('/users')
@@ -81,6 +84,13 @@ def process_edit(user_id):
     # user.image_url = url 
     user.image_url = url if url else "/static/default-pic.png" 
 
+    # springboard solution=======
+    # you can just assign the value directly to user.first_name so that you don't need to do "first_name = request.form['first_name']"
+    # user = User.query.get_or_404(user_id)
+    # user.first_name = request.form['first_name']
+    # user.last_name = request.form['last_name']
+    # user.image_url = request.form['image_url']
+
     db.session.add(user)
     db.session.commit()
 
@@ -119,6 +129,24 @@ def add_new_post(user_id):
     db.session.add(new_post)
     db.session.commit()
 
+    # springboard solution==========
+    # user = User.query.get_or_404(user_id)
+    # tag_ids = [int(num) for num in request.form.getlist("tags")] 
+    # ==above creates the list of tag ids in checked tags===
+    # tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+    # ===this is same as "SELECT * FROM tags table WHERE tag.id IN tags_ids"=====
+    # ====.in_(aaa), aaa could be list when you use with filter, you can just select the tags that tag_ids.
+    # new_post = Post(title=request.form['title'],
+    #                 content=request.form['content'],
+    #                 user=user,
+    #                 tags=tags)
+
+    # ????===== user = user, tags= tags are created from relationship???
+
+    # db.session.add(new_post)
+    # db.session.commit()
+
+
     return redirect(url_for('show_user_detail', user_id=user_id))
 
 @app.route('/posts/<int:post_id>')
@@ -128,7 +156,6 @@ def show_post_details(post_id):
     post =Post.query.get(post_id)
     tags =post.tags
     
-
     return render_template('post-detail.html', post=post, tags=tags)
 
 @app.route('/posts/<int:post_id>/edit', methods=["GET"])
@@ -142,13 +169,12 @@ def show_post_edit_form(post_id):
 @app.route('/posts/<int:post_id>/edit', methods=["POST"])
 def post_editted_post(post_id):
     """Handle form submission for updating an existing post"""
-    title = request.form['title']
-    content = request.form['content']
+   
     tags = request.form.getlist('tags')
 
     post = Post.query.get(post_id)
-    post.title = title
-    post.content = content 
+    post.title = request.form['title']
+    post.content = request.form['content']
 
     for tag in post.tags:
         if tag.id not in tags:
@@ -159,8 +185,24 @@ def post_editted_post(post_id):
         tag_id = Tag.query.get(tag)
         post.tags.append(tag_id)
 
-    db.session.add(post)
-    db.session.commit()
+# ====springboard solution=========#
+# @app.route('/posts/<int:post_id>/edit', methods=["POST"])
+# def posts_update(post_id):
+#     """Handle form submission for updating an existing post"""
+
+#     post = Post.query.get_or_404(post_id)
+#     post.title = request.form['title']
+#     post.content = request.form['content']
+
+#     tag_ids = [int(num) for num in request.form.getlist("tags")]
+#     post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+    # this is better way than how I did since if post.tags brought up 3 tags, but now user changed only 2 tags are related to the post, by using "post.tags" will update the 3 tags to 2 tags so you don't need to separately remove or 
+
+#     db.session.add(post)
+#     db.session.commit()
+
+#     db.session.add(post)
+#     db.session.commit()
 
 
     return redirect(url_for('show_post_details', post_id =post_id))
@@ -171,11 +213,10 @@ def delete_post(post_id):
     """delete a user and redirect to the list of users"""
 
     post =Post.query.get(post_id)
-    user_id=post.user_id
     db.session.delete(post)
     db.session.commit()
 
-    return redirect(url_for('show_user_detail', user_id=user_id))
+    return redirect(url_for('show_user_detail', user_id=post.user_id))
      # or you could write return redirect(f"/users/{post.user_id}')
 
 
