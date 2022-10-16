@@ -15,7 +15,7 @@
         <textarea class="form-control" name="content" id="content" maxlength="1000" row="3"></textarea>
         {% for tag in tags%}
         <div class="form-check">
-            <input class="form-check-input" name="tags" type="checkbox" id="tags">
+            <input class="form-check-input" name="tags" type="checkbox" value="{{tag.id}}" id="tags">
             <label class="form-check-label" for="tags">{{tag.name}}</label>
         </div>
         {% endfor %}

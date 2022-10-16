@@ -4,14 +4,14 @@ img{
     margin: 10px 50px;
 }
 
-.container{
+/* .container{
     width: 90%;
     display: flex;
     flex-direction: column;
     align-content: left;
     /* align-items: center; */
-    flex-wrap: wrap;
-}
+    /* flex-wrap: wrap; */
+/* } */
 
 .user-name{
     /* width: 100%; */

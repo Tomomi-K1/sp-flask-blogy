@@ -3,19 +3,26 @@
 {% block title %} Edit User Form {% endblock %}
 
 {% block content %} 
-<h1> Edit a User</h1>
-<form action="/users/{{user.id}}/edit" method="POST">
-    <label for="first_name">First Name
-        <input type="text" name="first_name" id="first_name" value="{{user.first_name}}">
-    </label>
-    <label for="last_name">Last Name
-        <input type="text" name="last_name" id="last_name" value="{{user.last_name}}">
-    </label>
-    <label for="url"> Image URL
-        <input type="text" name="url" id="url" value="{{user.image_url}}">
-    </label>
-    <a href="/users"><button>Cancel</button></a>
-    <button type="submit">Add</button>
-</form>
-
+<div class="container">
+    <h1> Edit a User</h1>
+    <form action="/users/{{user.id}}/edit" method="POST">
+        <div class="row">
+            <label for="first_name">First Name
+                <input class="form-control-lg"  type="text" name="first_name" id="first_name" value="{{user.first_name}}">
+            </label>
+        </div>
+        <div class="row">
+            <label for="last_name">Last Name
+                <input class="form-control-lg" type="text" name="last_name" id="last_name" value="{{user.last_name}}">
+            </label>
+        </div>
+        <div class="row">
+            <label for="url"> Image URL
+                <input class="form-control-lg" type="text" name="url" id="url" value="{{user.image_url}}">
+            </label>
+        </div>
+        <a href="/users"><button class="btn btn-info m-1">Cancel</button></a>
+        <button class="btn btn-success" type="submit">Add</button>
+    </form>
+</div>
 {% endblock %}

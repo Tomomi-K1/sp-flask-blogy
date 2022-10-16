@@ -7,15 +7,20 @@
     <div class="container">
         <h1>{{post.title}}</h1>
         <p>{{post.content}}</p>
+
+        <p>
+            <span>Tags:</span>
+            {% for tag in tags %}
+            <a href="/tags/{{ tag.id }}"><span class="badge bg-outline-primary">{{tag.name}}</span></a>
+            {% endfor %}
+        </p>
       
         <div class="container">
             <div class="row">
-                <a class='col' href="/users/{{post.user_id}}"><button>Cancel</button></a>
-                <form class ='col' action="/posts/{{post.id}}/edit" method="GET">
-                    <button type="submit">Edit</button>
-                </form>
-                <form class='col' action="/posts/{{post.id}}/delete" method="POST">
-                    <button type="submit">Delete</button>
+                <form>
+                    <button formaction="/users/{{post.user_id}}" class="btn btn-outline-info m-1" >Cancel</button>
+                    <button formaction="/posts/{{post.id}}/edit" formmethod="GET" class="btn btn-success m-1" type="submit">Edit</button>
+                    <button formaction="/posts/{{post.id}}/delete" formmethod="POST" class="btn btn-danger m-1" type="submit">Delete</button>
                 </form>
             </div>
         </div>

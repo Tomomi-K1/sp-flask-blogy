@@ -39,6 +39,7 @@ class Post(db.Model):
 
     tags=db.relationship('Tag', secondary ='posttags', backref='posts')
 
+    middletable=db.relationship('PostTag', backref='posttable', cascade="all, delete")
 
     def __repr__(self):
         """Show info about post"""
@@ -57,17 +58,17 @@ class Tag(db.Model):
     def __repr__(self):
         """Show info about Tag"""
 
-        return f'<post {self.id} {self.name}>'
+        return f'<tag {self.id} {self.name}>'
 
 
 class PostTag(db.Model):
 
     __tablename__ = "posttags"
 
-    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id", ondelete="CASCADE"), primary_key=True)
 
     def __repr__(self):
         """Show info about posttag"""
 
-        return f'<post {self.post_id} {self.tag_id}>'
+        return f'<posttags {self.post_id} {self.tag_id}>'

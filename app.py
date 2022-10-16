@@ -113,7 +113,9 @@ def add_new_post(user_id):
     tags = request.form.getlist('tags')
     
     new_post = Post(title=title, content=content, user_id=user_id )
-    
+    for tag in tags:
+        tag_id = Tag.query.get(tag)
+        new_post.tags.append(tag_id)
     db.session.add(new_post)
     db.session.commit()
 
@@ -124,27 +126,42 @@ def show_post_details(post_id):
     """Show a post.Show buttons to edit and delete the post."""
     
     post =Post.query.get(post_id)
+    tags =post.tags
+    
 
-    return render_template('post-detail.html', post=post)
+    return render_template('post-detail.html', post=post, tags=tags)
 
 @app.route('/posts/<int:post_id>/edit', methods=["GET"])
 def show_post_edit_form(post_id):
     """Show a form to edit an existing post"""
     post = Post.query.get(post_id)
-    return render_template('post-edit-form.html', post=post)
+    tags = Tag.query.all()
+    checked_tag = post.tags
+    return render_template('post-edit-form.html', post=post, tags=tags,checked_tag=checked_tag)
 
 @app.route('/posts/<int:post_id>/edit', methods=["POST"])
 def post_editted_post(post_id):
     """Handle form submission for updating an existing post"""
     title = request.form['title']
     content = request.form['content']
-    
+    tags = request.form.getlist('tags')
+
     post = Post.query.get(post_id)
     post.title = title
     post.content = content 
 
+    for tag in post.tags:
+        if tag.id not in tags:
+            tag=Tag.query.get(tag.id)
+            post.tags.remove(tag)
+    
+    for tag in tags:
+        tag_id = Tag.query.get(tag)
+        post.tags.append(tag_id)
+
     db.session.add(post)
     db.session.commit()
+
 
     return redirect(url_for('show_post_details', post_id =post_id))
     # or you could write return redirect(f"/users/{post.user_id}')
